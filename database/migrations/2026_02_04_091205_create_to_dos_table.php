@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('to_dos', function (Blueprint $table) {
             $table->id();
             $table->string("content");
+            $table->enum("priority", ["low", "medium", "high"]);
             $table->boolean("completed");
             $table->timestamps();
         });
