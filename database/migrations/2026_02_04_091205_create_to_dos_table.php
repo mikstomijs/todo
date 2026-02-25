@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("content");
             $table->enum("priority", ["low", "medium", "high"]);
+            $table->string("user_id");
             $table->boolean("completed");
             $table->timestamps();
         });

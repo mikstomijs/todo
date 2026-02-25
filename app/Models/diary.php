@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class diary extends Model
 {
     use HasFactory;
-    protected $fillable = ["title", "body", "date"];
+    protected $fillable = ["title", "body", "date", "user_id"];
+
+      public function user()    
+    {
+        return $this->belongsTo(User::class);
+    }
 }

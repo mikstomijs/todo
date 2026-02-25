@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 use App\Models\diary;
 use Illuminate\Http\Request;
-
+Use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 class DiaryController extends Controller
 {
     public function index() {
-        $diaries = diary::all();
+        $id = auth()->user()->id;
+        $diaries = User::find($id)->diaries;
         return view("diaries.index", compact("diaries"));
     }
 
       public function show(diary $diary) {
+        if(!Gate::allows('interact-diary', $diary)) {
+            return redirect('/');
+        } else
         return view("diaries.show", compact("diary"));
     }
 
@@ -26,22 +31,28 @@ class DiaryController extends Controller
             "body" => ["required"],
             "date" => ["required"]
         ]);
-     
         diary::create([
   "title" => $validated["title"],
   "body" => $validated["body"],
-  "date" => $validated["date"]
+  "date" => $validated["date"],
+  "user_id" => auth()->id()
 ]);
     return redirect("/diaries");
     }
 
 
     public function edit(diary $diary) {
+        if(!Gate::allows('interact-diary', $diary)) {
+            return redirect('/');
+        } else
         return view("diaries.edit", compact('diary'));
     }
 
 
     public function update(Request $request, diary $diary) {
+        if(!Gate::allows('interact-diary', $diary)) {
+            return redirect('/');
+        } else
          $validated = $request->validate([
             "title" => ["required", "max:100"],
             "body" => ["required"],
@@ -58,6 +69,9 @@ class DiaryController extends Controller
     }
 
     public function destroy(diary $diary) {
+        if(!Gate::allows('interact-diary', $diary)) {
+            return redirect('/');
+        } else
         $diary->delete();
         return redirect("/todos");
     }

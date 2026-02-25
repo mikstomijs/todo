@@ -7,6 +7,13 @@
         <li><a href="/why">Kāpēc?</a></li>
         <li><a href="/diaries">Dienasgrāmatas</a></li>
         <li><a href="/diaries/create">Izveidot ierakstu</a></li>
+        <li>    @auth
+                <form action="/logout" method="POST">
+                    @csrf
+                <button>Atteikties</button>
+                </form>
+                @endauth
+        </li>
     </ul>
 </nav>
 </header>
